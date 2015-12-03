@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="members">
+
+    <select id="idFind" resultType="String" parameterType="Member">
+		SELECT id
+		FROM members
+		WHERE name = #{name}
+		AND phone = #{phone}
+		AND birth_date = #{birthDate}         
+	</select>
+    <select id="pwFind" resultType="String" parameterType="Member">
+		SELECT password
+		FROM members
+		WHERE id = #{id}
+		AND phone = #{phone}
+		AND birth_date = #{birthDate}         
+	</select>
+    <select id="selectLogin" resultType="Member" parameterType="Member">
+		SELECT member_no memberNo,id,password,name,birth_date,gender,phone,regdate,type,profile
+		FROM members
+		WHERE id = #{id}
+		AND password = #{password}
+	</select>
+    <insert id="insertMember" parameterType="Member">
+        INSERT INTO members(member_no,id,password,name,birth_date,gender,phone,regdate,type,profile)
+        VALUES(members_seq.nextval,#{id},#{password},#{name},#{birthDate},#{gender},#{phone},SYSTIMESTAMP,#{type},null)
+    </insert>
+    <select id="check" parameterType="String" resultType="int">
+        SELECT count(*)
+        FROM members
+        WHERE id = #{id}
+    </select>
+    <select id="selectLogin1" resultType="int" parameterType="Member">
+        SELECT member_no memberNo
+        FROM members
+        WHERE id = #{id} AND password = #{password}
+    </select>
+    <select id="selectOne" parameterType="int" resultType="Member">
+        SELECT member_no memberNo, id, password, name, birth_date birthDate, gender, phone, regdate, type, profile
+        FROM members
+        WHERE member_no = #{memberNo}
+    </select>
+    <update id="update" parameterType="Member">
+        UPDATE members SET password = #{password}, name = #{name}, phone = #{phone}, type = #{type}
+        WHERE member_no = #{memberNo}
+    </update>
+
+    <select id="movieInfoList" parameterType="int" resultType="Member">
+        <![CDATA[
+
+		SELECT b.booking_no bookingNo, v.title movieTitle, s.showing_date showingDate, TO_CHAR(s.start_time, 'hh:MI') startTime, TO_CHAR(s.end_time, 'hh:MI') endTime, e.row_value seatRow, e.col_value seatCol, c.name screenName, c.floor screenFloor, i.name cinemaName
+		FROM bookings b, showing s, movies v, seats e, screens c, cinemas i, members m, tickets t
+		WHERE m.member_no = b.member_no
+		AND b.showing_no = s.showing_no
+		AND s.movie_no = v.movie_no
+		AND b.booking_no = t.booking_no
+		AND t.seat_no = e.seat_no
+		AND e.screen_no = c.screen_no
+		AND c.cinema_no = i.cinema_no
+		AND m.member_no = #{member_no}
+
+        ]]>
+    </select>
+
+    <select id="frequentCinema" parameterType="int" resultType="String">
+        SELECT frequentCinema
+        FROM (SELECT frequentCinema, rownum r
+        FROM (SELECT frequentCinema, COUNT(frequentCinema)
+        FROM (SELECT c.name frequentCinema, m.MEMBER_NO memberNo
+        FROM SCREENS sc, CINEMAS c, SEATS se, TICKETS ti, BOOKINGS b, MEMBERS m
+        WHERE sc.CINEMA_NO = c.CINEMA_NO
+        AND se.SCREEN_NO = sc.SCREEN_NO
+        AND ti.SEAT_NO = se.SEAT_NO
+        AND ti.BOOKING_NO = b.BOOKING_NO
+        AND b.MEMBER_NO = m.MEMBER_NO)
+        WHERE memberNo = #{memberNo}
+        GROUP BY frequentCinema
+        ORDER BY 2))
+        WHERE r = 1
+    </select>
+
+    <select id="showedMovieList" parameterType="int" resultType="Member">
+        <![CDATA[
+
+		SELECT v.movie_no movieNo, v.poster moviePoster, v.title movieTitle
+		FROM members m, bookings b, showing s, movies v
+		WHERE m.member_no = b.member_no
+		AND b.showing_no = s.showing_no
+		AND s.movie_no = v.movie_no
+		AND s.end_time < SYSTIMESTAMP
+		AND m.member_no = #{memberNo}
+
+        ]]>
+    </select>
+
+
+</mapper>
+
+

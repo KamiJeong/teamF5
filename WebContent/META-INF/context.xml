@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resource
+            name="jdbc/oracle"
+            auth="Container"
+            driverClassName="oracle.jdbc.OracleDriver"
+            type="javax.sql.DataSource"
+            url="jdbc:oracle:thin:@//192.168.102.118:1521/xe"
+            username="gigabox"
+            password="1111"
+            maxIdle="10"
+            maxActive="20"
+            maxWait="-1"
+            />
+</Context>

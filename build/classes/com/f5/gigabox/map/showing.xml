@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="showing">
+    <select id="selectList" resultType="ShowingVO">
+        SELECT m.pg pg, m.title title
+        FROM showing s, movies m
+        WHERE s.movie_no = m.movie_no AND s.start_time > SYSTIMESTAMP
+        GROUP BY pg, title
+    </select>
+    <select id="selectTimeList" resultType="ShowingVO" parameterType="ShowingVO">
+        SELECT TO_CHAR(s.start_time, 'HH:mm') movieTime, s.showing_nth showingNth, sc.name screenName, s.showing_no showingNo, s.screen_no screenNo
+        FROM showing s, movies m, screens sc
+        WHERE s.movie_no = m.movie_no
+          AND s.screen_no = sc.screen_no
+          AND m.title = #{title}
+          AND sc.cinema_no = #{cinemaNo}
+          AND TO_CHAR(start_time, 'yyyy-MM-dd HH:mm') LIKE #{temp}
+          AND start_time > SYSTIMESTAMP
+        ORDER BY 1
+    </select>
+    <select id="selectInfo" resultType="ShowingVO" parameterType="int">
+        SELECT m.title title, c.name cinemaName, sc.name screenName, TO_CHAR(s.start_time, 'hh:mm') movieTime
+        FROM showing s, movies m, screens sc, cinemas c
+        WHERE s.movie_no = m.movie_no
+          AND s.screen_no = sc.screen_no
+          AND sc.cinema_no = c.cinema_no
+          AND s.showing_no = #{showingNo}
+    </select>
+
+
+</mapper>

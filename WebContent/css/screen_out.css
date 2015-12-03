@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+.screen_out {
+    width: 0;
+    height: 0;
+    border: 0;
+    padding: 0;
+    font-size: 0;
+    line-height: 0px;
+    overflow: hidden;
+    visibility: hidden;
+    position: absolute;
+}

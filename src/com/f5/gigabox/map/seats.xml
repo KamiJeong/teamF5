@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="seats">
+    <select id="selectList" resultType="Seat" parameterType="int">
+        SELECT seat_no seatNo, col_value colValue, row_value rowValue, position_x positionX, position_y positionY, screen_no screenNo
+        FROM seats
+        WHERE screen_no = #{screenNo}
+    </select>
+    <select id="selectBooked" resultType="int" parameterType="int">
+        SELECT t.SEAT_NO seatNo
+        FROM TICKETS t, BOOKINGS b
+        WHERE t.BOOKING_NO = b.BOOKING_NO
+          AND b.SHOWING_NO = #{showingNo}
+    </select>
+</mapper>

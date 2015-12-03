@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventboards">
+	<select id="selectCount" resultType="int">
+		SELECT COUNT(*)
+		FROM eventboards
+	</select>
+	
+	<!-- <select id="selectOne" parameterType="int" resultType="Eventboard">
+		SELECT eventboard_no eventboardNo, title, writer, regdate, hits, contents
+		FROM eventboards
+		WHERE eventboard_no = #{eventboardNo}
+	</select> -->
+	
+	<select id="selectOne" parameterType="int" resultType="Eventboard">
+		SELECT eventboard_no eventboardNo, title, writer, regdate, hits, contents
+		FROM eventboards
+		WHERE eventboard_no  = #{eventboardNo}
+	</select>
+	
+	<select id="selectList" parameterType="PagingVO" resultType="Eventboard">
+		SELECT eventboard_no eventboardNo, title, writer, regdate, hits, contents
+		FROM(SELECT eventboard_no, title, writer, regdate, hits, contents,rownum r
+		     FROM(SELECT eventboard_no, title, writer, regdate , hits, contents
+		          FROM eventboards
+		          ORDER BY 1 DESC))
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+	
+	<update id="updateHits" parameterType="int">
+		UPDATE eventboards SET hits = hits + 1
+		WHERE eventboard_no = #{eventboardNo}
+	</update>
+	
+	
+</mapper>

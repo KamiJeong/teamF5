@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="points">
+	
+	<select id="recentPoint" resultType="int" parameterType="int">
+		SELECT sum(p.point_detail)
+		FROM members m, points p
+		WHERE m.member_no=p.member_no AND m.member_no=#{memberNo}
+	</select>
+	
+	<select id="allPoint" resultType="int" parameterType="int">
+		SELECT sum(p.point_detail)
+		FROM members m, points p
+		WHERE m.member_no=p.member_no AND p.point_detail>0 AND m.member_no=#{memberNo} 
+	</select>
+	
+	
+</mapper>
+
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="movies">
+
+    <select id="selectList" resultType="Movie">
+		SELECT movie_no movieNo, director, actor, pg, making_date makingDate, poster,release_date releaseDate, genre, synopsis, title, grade
+		FROM movies
+		ORDER BY grade DESC
+	</select>
+
+    <select id="selectListTwo" resultType="Movie">
+		SELECT movie_no movieNo, director, actor, pg, making_date makingDate, poster,release_date releaseDate, genre, synopsis, title, grade
+		FROM movies
+		ORDER BY release_date asc
+	</select>
+
+    <select id="selectListThree" resultType="Movie">
+		SELECT movie_no movieNo, director, actor, pg, making_date makingDate, poster,release_date releaseDate, genre, synopsis, title, grade
+		FROM movies
+		WHERE release_date>SYSTIMESTAMP
+		ORDER BY release_date asc
+	</select>
+
+    <select id="recentMovie" resultType="String" parameterType="int">
+		<![CDATA[
+
+		SELECT v.title
+		FROM members m, bookings b, showing s, movies v
+		WHERE m.member_no=b.member_no AND b.showing_no=s.showing_no AND s.movie_no=v.movie_no AND s.start_time<SYSTIMESTAMP AND m.member_no=#{memberNo} AND ROWNUM<=1
+		ORDER BY s.start_time DESC
+
+        ]]>
+	</select>
+    <select id="recentMovieList" parameterType="int" resultType="Movie">
+        <![CDATA[
+
+
+		SELECT v.title movieTitle, TO_CHAR(s.start_time, 'hhMI') movieStartTime, TO_CHAR(s.end_time, 'hhMI') movieEndTime, c.name cinemaName
+		FROM members m, bookings b, showing s, movies v, screens sc, cinemas c
+		WHERE m.member_no=b.member_no
+		AND b.showing_no=s.showing_no
+		AND s.screen_no = sc.screen_no
+		AND sc.cinema_no = c.cinema_no
+		AND s.movie_no=v.movie_no
+		AND s.start_time<SYSTIMESTAMP
+		AND m.member_no=#{memberNo}
+		AND ROWNUM<=1
+		ORDER BY s.start_time DESC
+
+
+        ]]>
+    </select>
+    <select id="movieOne" resultType="Movie" parameterType="int">
+        SELECT movie_no movieNo, director, actor, pg, making_date makingDate, poster,release_date releaseDate, genre, synopsis, title, grade
+        FROM movies
+        WHERE movie_no=#{movieNo}
+    </select>
+
+
+</mapper>
+
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="comments">
+
+	<select id="commentListTemp" parameterType="int" resultType="Comment">
+		SELECT c.regdate regdate, c.star star, c.contents contents, v.movie_no movieNo, v.poster poster, v.title title
+		FROM members m, comments c, movies v, bookings b, showing s
+		WHERE m.member_no = c.member_no
+		AND c.movie_no = v.movie_no
+		AND m.member_no = b.member_no
+		AND b.showing_no = s.showing_no
+		AND	s.movie_no = c.movie_no
+		AND m.member_no = #{memberNo}
+	</select>
+
+    <select id="commentList" resultType="Comment" parameterType="int">
+        SELECT c.comment_no commentNo, c.regdate, c.star, c.contents, c.member_no memberNo, m.name memberName, m.profile memberProfile
+        FROM comments c, members m
+        WHERE c.member_no = m.member_no
+        AND c.movie_no = #{movieNo}
+    </select>
+
+    <select id="getAvgStar" resultType="double" parameterType="int">
+        SELECT avg(star)
+        FROM comments
+        WHERE movie_no = #{movieNo}
+    </select>
+
+
+</mapper>

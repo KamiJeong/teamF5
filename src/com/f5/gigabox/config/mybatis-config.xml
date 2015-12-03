@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC
+        "-//mybatis.org/DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!-- Type Alias -->
+    <typeAliases>
+        <typeAlias alias="ShowingVO" type="com.f5.gigabox.vo.ShowingVO"/>
+        <typeAlias alias="City" type="com.f5.gigabox.vo.City"/>
+        <typeAlias alias="Cinema" type="com.f5.gigabox.vo.Cinema"/>
+        <typeAlias alias="Seat" type="com.f5.gigabox.vo.Seat"/>
+        <typeAlias alias="Member" type="com.f5.gigabox.vo.Member"/>
+        <typeAlias alias="Movie" type="com.f5.gigabox.vo.Movie"/>
+        <typeAlias alias="Point" type="com.f5.gigabox.vo.Point"/>
+        <typeAlias alias="Booking" type="com.f5.gigabox.vo.Booking"/>
+        <typeAlias alias="Ticket" type="com.f5.gigabox.vo.Ticket"/>
+        <typeAlias alias="Event" type="com.f5.gigabox.vo.Event"/>
+        <typeAlias alias="Eventboard" type="com.f5.gigabox.vo.Eventboard"/>
+        <typeAlias alias="PagingVO" type="com.f5.gigabox.vo.PagingVO"/>
+        <typeAlias alias="Comment" type="com.f5.gigabox.vo.Comment"/>
+        <typeAlias alias="Image" type="com.f5.gigabox.vo.Image"/>
+        <typeAlias alias="Trailer" type="com.f5.gigabox.vo.Trailer"/>
+        <typeAlias alias="Like" type="com.f5.gigabox.vo.Like"/>
+    </typeAliases>
+    <!-- DB connect environment config-->
+    <environments default="development">
+        <environment id="development">
+            <!-- Using JDBC -->
+            <transactionManager type="JDBC"/>
+            <!-- Connection JavaNamingDomainInterface -->
+            <dataSource type="JNDI">
+                <property name="data_source" value="java:comp/env/jdbc/oracle"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="com/f5/gigabox/map/showing.xml"/>
+        <mapper resource="com/f5/gigabox/map/cities.xml"/>
+        <mapper resource="com/f5/gigabox/map/cinemas.xml"/>
+        <mapper resource="com/f5/gigabox/map/seats.xml"/>
+        <mapper resource="com/f5/gigabox/map/members.xml"/>
+        <mapper resource="com/f5/gigabox/map/movies.xml"/>
+        <mapper resource="com/f5/gigabox/map/points.xml"/>
+        <mapper resource="com/f5/gigabox/map/bookings.xml"/>
+        <mapper resource="com/f5/gigabox/map/tickets.xml"/>
+        <mapper resource="com/f5/gigabox/map/eventboards.xml"/>
+        <mapper resource="com/f5/gigabox/map/events.xml"/>
+        <mapper resource="com/f5/gigabox/map/comments.xml"/>
+        <mapper resource="com/f5/gigabox/map/likes.xml"/>
+        <mapper resource="com/f5/gigabox/map/trailers.xml"/>
+        <mapper resource="com/f5/gigabox/map/images.xml"/>
+    </mappers>
+</configuration>

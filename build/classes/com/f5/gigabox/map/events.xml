@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="events">
+
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*)
+        FROM events
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="Event">
+        SELECT even_no evenNo, title, writer, start_date, end_date, regdate,contents,image
+        FROM events
+        WHERE even_no = #{evenNo}
+    </select>
+
+    <select id="selectOneImage" parameterType="String" resultType="Event">
+        SELECT even_no evenNo, title, writer, start_date, end_date, regdate,contents,image
+        FROM events
+        WHERE image = #{image}
+    </select>
+
+    <select id="selectOneContent" parameterType="String" resultType="Event">
+        SELECT even_no evenNo, title, writer, start_date, end_date, regdate,contents,image
+        FROM events
+        WHERE contents = #{contents}
+    </select>
+
+
+    <select id="selectList" parameterType="PagingVO" resultType="Event">
+		SELECT even_no evenNo, title, writer, start_date startDate, end_date endDate, regdate,contents,image
+		FROM(SELECT even_no, title, writer, start_date, end_date, regdate,contents,image,rownum r
+		     FROM(SELECT even_no, title, writer, start_date, end_date, regdate,contents,image
+		          FROM events
+		          ORDER BY 1 DESC))
+		WHERE r BETWEEN #{start} AND #{end}
+	</select>
+
+</mapper>

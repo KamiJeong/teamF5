@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bookings">
+    <select id="selectBookingNo" parameterType="Booking" resultType="int">
+        SELECT booking_no bookingNo
+        FROM bookings
+        WHERE showing_no = #{showingNo} AND member_no = #{memberNo}
+    </select>
+
+    <insert id="insertOne" parameterType="Booking">
+        INSERT INTO bookings (booking_no, payment, showing_no, member_no)
+        VALUES (bookings_seq.nextval, #{payment}, #{showingNo}, #{memberNo})
+    </insert>
+</mapper>

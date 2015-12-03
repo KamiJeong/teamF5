@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org/DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="likes">
+	
+	<select id="likeList" resultType="Like" parameterType="int">
+		SELECT preference, count(preference) likeCount
+		FROM likes
+		WHERE comment_no = #{commentNo}
+		GROUP BY preference
+		ORDER BY preference
+	</select>
+	
+	<insert id="insertLike" parameterType="Like">
+		INSERT INTO likes (like_no,preference,member_no,comment_no)
+		VALUES (likes_seq.nextval,#{preference},#{memberNo},#{commentNo})
+	</insert>
+	
+	<select id="selectLike" resultType="String" parameterType="Like">
+		SELECT preference
+		FROM likes
+		WHERE member_no=#{memberNo} AND comment_no=#{commentNo}
+	</select>	
+	
+</mapper>
+
+

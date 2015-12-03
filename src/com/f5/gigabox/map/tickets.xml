@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tickets">
+    <insert id="insertOne" parameterType="Ticket">
+        INSERT INTO TICKETS (ticket_no, booking_no, seat_no)
+        VALUES (TICKETS_SEQ.nextval, #{bookingNo}, #{seatNo})
+    </insert>
+
+    <select id="bookingList" parameterType="int" resultType="Ticket">
+        SELECT
+        t.TICKET_NO ticketNo,
+        se.COL_VALUE || se.ROW_VALUE seatName,
+        s.SHOWING_DATE showingDate,
+        TO_CHAR(s.START_TIME, 'hhMI') movieStartTime,
+        TO_CHAR(s.END_TIME, 'hhMI') movieEndTime,
+        sc.NAME screenName,
+        c.NAME cinemaName,
+        m.TITLE movieTitle,
+        b.BOOKING_NO bookingNo
+        FROM SHOWING s, SCREENS sc, CINEMAS c, MOVIES m, BOOKINGS b, TICKETS t, SEATS se, MEMBERS me
+        WHERE me.MEMBER_NO = b.MEMBER_NO
+        AND b.SHOWING_NO = s.SHOWING_NO
+        AND s.MOVIE_NO = m.MOVIE_NO
+        AND b.BOOKING_NO = t.BOOKING_NO
+        AND t.SEAT_NO = se.SEAT_NO
+        AND s.SCREEN_NO = sc.SCREEN_NO
+        AND sc.CINEMA_NO = c.CINEMA_NO
+        AND me.MEMBER_NO = #{memberNo}
+    </select>
+
+    <delete id="deleteTicket" parameterType="Ticket">
+        DELETE FROM tickets
+        WHERE ticket_no = #{ticketNo} AND booking_no = #{bookingNo}
+    </delete>
+
+    <delete id="deleteBooking" parameterType="int">
+        DELETE FROM bookings
+        WHERE booking_no = #{bookingNo}
+    </delete>
+</mapper>
